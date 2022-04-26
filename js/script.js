@@ -13,13 +13,13 @@
     // - [*] appendere la cella generata al contenitore
 
 // [*] Al click di una delle celle, 
-    // [] se il numero della cella è presente nell' array delle bombe:
-        //[] la cella si colora di rosso
-        //[] stampare i numeri di tentativi 
-        // [] fine gioco, utente perde
+    // [*] se il numero della cella è presente nell' array delle bombe:
+        //[*] la cella si colora di rosso
+        //[*] stampare i numeri di tentativi 
+        // [*] fine gioco, utente perde
     // [] altrimenti:
-        //[] la cella si colora di blu
-        //[] il numero della cella si salva nell'array
+        //[*] la cella si colora di blu
+        //[*] il numero della cella si salva nell'array
         //[] se lunghezza dell'array = numero massimo di tentativi:
             //[] fine gioco, utente vince
 
@@ -27,13 +27,17 @@
 // al click parte il gioco
 const playButton = document.getElementById("start");
 playButton.addEventListener("click", printGrid);
+let checkCells = [];
+let bombsNumber = 16;
+let randomArray = [];
+let score = 0;
 
 // FUNZIONE 1
 /**
  * Description scelgo la difficoltà di gioco e genero i numeri da 1 a cellNumber
  * non ritorna niente
  */
-function printGrid() {
+function printGrid(bombsNumber) {
     // creo la griglia
     const grid = document.getElementById("grid");
     const title = document.getElementById("title");
@@ -57,6 +61,10 @@ function printGrid() {
         cellsNuberInRow = 7;
     }
 
+    randomArray = generateRandomNumbers(bombsNumber, cellNumber);
+
+    console.log(randomArray);
+
     // Generare le celle da 1 a cellNumber
     for (let i = 1; i <= cellNumber; i++) {
         // genera cella
@@ -66,6 +74,7 @@ function printGrid() {
         // appendere la cella generata al contenitore
         grid.append(newItem);
     }
+
 }
 
 // FUNCTION 2
@@ -74,7 +83,26 @@ function printGrid() {
  * Non ritorna niente
  */
  function handleCellClick() {
-    this.classList.add("active");
+    
+    const cliccato = parseInt(this.innerText);
+
+    if (randomArray.includes(cliccato)) {
+        // cella con bomba
+        console.log("hai colpito un fiore");
+        document.getElementById("score").innerHTML = `hai fatto un punteggio di ${score}`;
+        this.classList.add("red");
+        this.style.pointerEvents = "none";
+    } else {
+        // Cella senza bomba
+        score++;
+        checkCells.push(cliccato);
+        console.log('Punteggio attuale: '+score);
+        this.classList.add("active");
+        this.style.pointerEvents = "none";
+    }
+    
+    console.log(checkCells);
+
 }
 
 // FUNCTION 3
@@ -105,7 +133,7 @@ function generateGridItem(gridNumber, cellsInRow) {
     return gridItem;
 }
 // numeri random
-function getRndInteger() {
+function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 // FUNCTION 4
@@ -118,10 +146,11 @@ function getRndInteger() {
 function generateRandomNumbers (quantity, maxLimit) {
     const randomArray = [];
     while (randomArray.length < 16) {
-        const randomNumber = getRdnIntegers(1, maxLimit);
+        const randomNumber = getRndInteger(1, maxLimit);
         if (!randomArray.includes(randomNumber)) {
             randomArray.push(randomNumber);
         }
     }
     return randomArray;
 }
+

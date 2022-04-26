@@ -31,9 +31,10 @@ main {
     width: 100%;
     height: calc(100% - 150px);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: aquamarine;
+    background-color: #806900;
 }
 
 .grid-container {
@@ -66,8 +67,17 @@ main {
     color: white;
 }
 
+.grid-item.red {
+    background-color: red;
+    color: white;
+}
+
 .grid-item.active span {
     display: block;
+}
+
+h3 {
+    margin-top: 1rem;
 }
 /* FOOTER */
 footer {
